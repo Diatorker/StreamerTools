@@ -8,12 +8,24 @@ plugins {
 }
 
 group = 'org.latuile'
-version = '2.0.0'
+version = '2.0.1'
 archivesBaseName = 'StreamerTools'
 sourceCompatibility = '11'
 
+mkdocs.publish.docPath = ''
+
 bootJar {
     archiveFileName = 'streamer-tools.jar'
+    finalizedBy 'mkdocsBuild'
+}
+
+mkdocsBuild {
+    finalizedBy 'copyDocs'
+}
+
+task copyDocs(type: Copy) {
+    from "$buildDir/mkdocs/"
+    into "$buildDir/libs/doc/"
     finalizedBy 'copyDists'
 }
 
