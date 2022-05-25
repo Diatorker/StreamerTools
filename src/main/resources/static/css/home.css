@@ -1,0 +1,27 @@
+.scale-100{
+    transform: scale(1);
+    transform-origin: top left;
+}
+.scale-75{
+    transform: scale(0.75);
+    transform-origin: top left;
+}
+.scale-50{
+    transform: scale(0.5);
+    transform-origin: top left;
+}
+.scale-45{
+    transform: scale(0.45);
+    transform-origin: top left;
+}
+.scale-25{
+    transform: scale(0.25);
+    transform-origin: top left;
+}
+
+.widget-button{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    box-shadow: -2px 2px 9px 0 #444444;
+}

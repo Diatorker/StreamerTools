@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>StreamerTools - Spotify authorize</title>
+    <style>
+        body {
+            font-family: Roboto, Arial, sans-serif;
+            color: white;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            margin: 0
+        }
+
+        #ytnp-border {
+            background: linear-gradient(45deg, rgba(253, 96, 41, 1) 0%, rgba(253, 96, 41, 1) 40%, rgba(0, 194, 252, 1) 60%, rgba(0, 194, 252, 1) 100%);
+            border-radius: 3px;
+            padding: 3px;
+        }
+
+        #ytnp-body {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            background: #080822;
+            border-radius: 3px;
+            padding: 0.5rem;
+            width: 25rem;
+        }
+
+        #ytnp-vid-thumbnail {
+            flex-shrink: 1;
+            height: 90px;
+            object-fit: cover;
+        }
+
+        #ytnp-vid-details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: space-around;
+            padding-left: 1rem;
+        }
+
+        #ytnp-vid-details > * {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="ytnp-border">
+    <div id="ytnp-body">
+        <div id="ytnp-vid-details">
+            <h3 id="ytnp-vid-title" th:if="${user != null}" th:text="${user.displayName}"></h3>
+            <h3 id="ytnp-vid-title" th:if="${user == null}">Not Authorized</h3>
+        </div>
+    </div>
+    <a th:href="${authURI}">Authorize</a>
+</div>
+</body>
+</html>

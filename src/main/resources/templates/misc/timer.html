@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>StreamerTools - Timer</title>
+    <link rel="stylesheet" href="/css/timer-style.css">
+</head>
+<body>
+<div id="timer-border">
+    <span id="preferences" hidden
+          th:data-accent1="${color_accent1}"
+          th:data-accent2="${color_accent2}"
+    ></span>
+    <canvas id="timer-body" width="500px" height="500px" th:data-duration-seconds="${time}">
+    </canvas>
+</div>
+</body>
+<script>
+    let preferencesDiv = document.getElementById("preferences");
+
+    //getting canvas and preparing positioning
+    let canvas = document.getElementById("timer-body");
+    let ctx = canvas.getContext("2d");
+    ctx.scale(canvas.width, canvas.height);
+    ctx.translate(0.5, 0.5);
+    ctx.rotate(-Math.PI/2);
+
+    //defining fill gradient
+    var gradient = ctx.createLinearGradient(0.0, -0.4, 0.0, 0.4);
+    gradient.addColorStop(0, preferencesDiv.dataset.accent1);
+    gradient.addColorStop(1, preferencesDiv.dataset.accent2);
+    ctx.fillStyle = gradient;
+
+    let timerDuration = document.querySelector("#timer-body").dataset.durationSeconds * 1000;
+    console.log(timerDuration)
+    let startTime = -1;
+
+    function render(ts){
+        if (startTime <= 0){
+            startTime = ts;
+        }
+
+        let elapsedTime = ts - startTime;
+
+        //setting global transparency to fade once the timer is over
+        ctx.globalAlpha = 1.0 - (elapsedTime - timerDuration)/1000;
+
+        //clearing previous frame
+        ctx.clearRect(-0.5, -0.5, 1.0, 1.0);
+        if(elapsedTime <= timerDuration + 1000) {
+            //render filled quadrant
+            elapsedTime = Math.min(timerDuration, elapsedTime)
+            ctx.beginPath();
+            ctx.arc(0.0, 0.0, 0.40, 0, 2 * Math.PI * elapsedTime / timerDuration);
+            ctx.lineTo(0.0, 0.0);
+            ctx.fill();
+
+            //render white under lines
+            ctx.strokeStyle = "white";
+            ctx.lineWidth = 0.1;
+            ctx.beginPath();
+            ctx.arc(0.0, 0.0, 0.45, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            //render black line
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 0.08;
+            ctx.beginPath();
+            ctx.arc(0.0, 0.0, 0.45, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            requestAnimationFrame(render);
+        }
+    }
+    requestAnimationFrame(render);
+</script>
+</html>

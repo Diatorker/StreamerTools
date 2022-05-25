@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>StreamerTools - Spotify Now Playing</title>
+    <link rel="stylesheet" href="/css/np-style.css">
+</head>
+<body th:style="'font-family:' + ${font_family}">
+<span id="preferences" hidden
+      th:data-metadata="${metadataUrl}"
+      th:data-behavior="${nothing_playing_behavior}"
+></span>
+<div id="np-border" th:if="${mode == 'full'}"
+     th:style="'background: ' + ${color_border} + '; border-radius: ' + ${border_radius} + '; padding: ' + ${border_width}">
+    <div id="np-body" th:style="'color: ' + ${color_text} + '; border-radius: ' + ${border_radius} + '; background: ' + ${color_background}">
+        <img id="np-song-thumbnail" src="https://localhost:8443/img/nothing-playing.png"/>
+        <div id="np-song-details">
+            <h1 id="np-song-title">Title</h1>
+            <h2 id="np-song-author">by Channel</h2>
+        </div>
+    </div>
+</div>
+<div id="np-border" th:if="${mode == 'img'}">
+    <div id="np-body">
+        <img id="np-song-thumbnail" src="https://localhost:8443/img/nothing-playing.png"/>
+    </div>
+</div>
+<div id="np-border" th:if="${mode == 'txt'}">
+    <div id="np-body" th:style="'color: ' + ${color_text}">
+        <div id="np-song-details">
+            <h1 id="np-song-title">Title</h1>
+            <h2 id="np-song-author">by Channel</h2>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    let preferencesDiv = document.getElementById("preferences");
+
+    function refreshNP() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", preferencesDiv.dataset.metadata);
+        xhr.onreadystatechange = function (e) {
+            if (xhr.readyState === 4) {
+                // console.log(xhr);
+                if (xhr.status === 200) {
+                    let nowPlaying = JSON.parse(xhr.responseText);
+                    // console.log(nowPlaying.thumbnail);
+
+                    if(preferencesDiv.dataset.behavior === "hidden"){
+                        document.querySelector("#np-border").hidden = nowPlaying.thumbnail === null;
+                    }
+
+                    let thumb = document.querySelector("#np-song-thumbnail");
+                    if(thumb) {
+                        if (nowPlaying.thumbnail !== null) {
+                            thumb.src = nowPlaying.thumbnail;
+                        } else {
+                            thumb.src = "https://localhost:8443/img/nothing-playing.png";
+
+                        }
+                    }
+
+                    let title = document.querySelector("#np-song-title");
+                    if(title)
+                        title.textContent = nowPlaying.title;
+
+                    let author = document.querySelector("#np-song-author");
+                    if(author)
+                        author.textContent = nowPlaying.channel;
+                } else {
+                    console.error(xhr.statusText);
+                }
+            }
+        };
+        xhr.onerror = function (e) {
+            console.log("request error");
+            console.error(xhr.statusText);
+        };
+        xhr.send();
+    }
+
+    setInterval(refreshNP, 2000);
+    refreshNP();
+</script>
+</html>

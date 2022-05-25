@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>StreamerTools - Configuration</title>
+    <link rel="stylesheet" href="/css/home.css">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="/lib/coloris/coloris.min.css"/>
+    <script src="/lib/coloris/coloris.min.js"></script>
+    <link rel="stylesheet" href="/lib/fontawesome/css/all.min.css"/>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" th:href="@{/}">StreamerTools</a>
+        </div>
+    </nav>
+</header>
+<section class="container">
+    <form method="post" th:action="@{/config}">
+        <div class="row">
+            <div class="col">
+                <div class="card bg-light mt-3">
+                    <div class="card-header"><h2>Widgets</h2></div>
+                    <div class="card-body container-fluid">
+                        <div class="row align-items-center">
+                            <h4 class="col-auto">Timer</h4>
+                            <p class="col-auto m-0 p-0">Le durée se change dans le liens du widget</p>
+                        </div>
+                        <div class="row">
+                            <div class="border rounded border-secondary col-auto p-0 mx-1"
+                                 style="height: 239px;width: 239px;position: relative">
+                                <iframe th:src="@{'timer/widget?time=10'}" class="scale-45" width="530"
+                                        height="530"></iframe>
+                                <a class="widget-button btn btn-sm btn-primary" th:href="@{'timer/widget?time=10'}"><i
+                                        class="fa-solid fa-link"></i></a>
+                            </div>
+                            <div class="border rounded border-secondary col-auto p-0 mx-1"
+                                 style="height: 239px;width: 239px;position: relative">
+                                <iframe th:src="@{'timer/widget?time=30'}" class="scale-45" width="530"
+                                        height="530"></iframe>
+                                <a class="widget-button btn btn-sm btn-primary" th:href="@{'timer/widget?time=30'}"><i
+                                        class="fa-solid fa-link"></i></a>
+                            </div>
+                            <div class="border rounded border-secondary col-auto p-0 mx-1"
+                                 style="height: 239px;width: 239px;position: relative">
+                                <iframe th:src="@{'timer/widget?time=60'}" class="scale-45" width="530"
+                                        height="530"></iframe>
+                                <a class="widget-button btn btn-sm btn-primary" th:href="@{'timer/widget?time=60'}"><i
+                                        class="fa-solid fa-link"></i></a>
+                            </div>
+                        </div>
+                        <h4>Youtube</h4>
+                        <div class="row">
+                            <div class="border rounded border-secondary col-auto p-0 mx-1"
+                                 style="height: 113px;width: 392px;position: relative">
+                                <iframe th:src="@{'/youtube/widget'}" class="scale-45" width="870"
+                                        height="250"></iframe>
+                                <a class="widget-button btn btn-sm btn-primary" th:href="@{'/youtube/widget'}"><i
+                                        class="fa-solid fa-link"></i></a>
+                            </div>
+                            <div class="border rounded border-secondary col-auto p-0 mx-1"
+                                 style="height: 113px;width: 392px;position: relative">
+                                <iframe th:src="@{'/youtube/widget?mode=txt'}" class="scale-45" width="870"
+                                        height="250"></iframe>
+                                <a class="widget-button btn btn-sm btn-primary" th:href="@{'/youtube/widget?mode=txt'}"><i
+                                        class="fa-solid fa-link"></i></a>
+                            </div>
+                            <div class="border rounded border-secondary col-auto p-0 mx-1"
+                                 style="height: 113px;width: 392px;position: relative">
+                                <iframe th:src="@{'/youtube/widget?mode=img'}" class="scale-45" width="870"
+                                        height="250"></iframe>
+                                <a class="widget-button btn btn-sm btn-primary" th:href="@{'/youtube/widget?mode=img'}"><i
+                                        class="fa-solid fa-link"></i></a>
+                            </div>
+                        </div>
+                        <h4>Spotify</h4>
+                        <div class="row">
+                            <div class="border rounded border-secondary col-auto p-0 mx-1"
+                                 style="height: 113px;width: 392px;position: relative">
+                                <iframe th:src="@{'/spotify/widget'}" class="scale-45" width="870"
+                                        height="250"></iframe>
+                                <a class="widget-button btn btn-sm btn-primary" th:href="@{'/spotify/widget'}"><i
+                                        class="fa-solid fa-link"></i></a>
+                            </div>
+                            <div class="border rounded border-secondary col-auto p-0 mx-1"
+                                 style="height: 113px;width: 392px;position: relative">
+                                <iframe th:src="@{'/spotify/widget?mode=txt'}" class="scale-45" width="870"
+                                        height="250"></iframe>
+                                <a class="widget-button btn btn-sm btn-primary" th:href="@{'/spotify/widget?mode=txt'}"><i
+                                        class="fa-solid fa-link"></i></a>
+                            </div>
+                            <div class="border rounded border-secondary col-auto p-0 mx-1"
+                                 style="height: 113px;width: 392px;position: relative">
+                                <iframe th:src="@{'/spotify/widget?mode=img'}" class="scale-45" width="870"
+                                        height="250"></iframe>
+                                <a class="widget-button btn btn-sm btn-primary" th:href="@{'/spotify/widget?mode=img'}"><i
+                                        class="fa-solid fa-link"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card bg-secondary text-white mt-3">
+                    <div class="card-header d-flex align-items-center justify-content-start">
+                        <h2>Preferences</h2>
+                        <input type="submit" value="Enregistrer" class="btn btn-success mx-3">
+                    </div>
+                    <div class="card-body container-fluid">
+                        <div class="row">
+                            <div class="col-6 mb-3"> <!-- THEME -->
+                                <div class="card text-black">
+                                    <div class="card-header"><h3>Theme</h3></div>
+                                    <div class="card-body container-fluid">
+                                        <div class="row mb-1">
+                                            <label for="theme.background" class="col-3 col-form-label">Background
+                                                Color</label>
+                                            <div class="col-9">
+                                                <input class="coloris form-control" type="text" id="theme.background"
+                                                       name="theme.background"
+                                                       th:value="${preferencesDict.get('theme.background')}">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-1">
+                                            <label for="theme.color-accent1" class="col-3 col-form-label">Accent 1
+                                                Color</label>
+                                            <div class="col-9">
+                                                <input class="coloris form-control" type="text" id="theme.color-accent1"
+                                                       name="theme.color-accent1"
+                                                       th:value="${preferencesDict.get('theme.color-accent1')}">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-1">
+                                            <label for="theme.color-accent2" class="col-3 col-form-label">Accent 2
+                                                Color</label>
+                                            <div class="col-9">
+                                                <input class="coloris form-control" type="text" id="theme.color-accent2"
+                                                       name="theme.color-accent2"
+                                                       th:value="${preferencesDict.get('theme.color-accent2')}">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-1">
+                                            <label for="theme.text" class="col-3 col-form-label">Text Color</label>
+                                            <div class="col-9">
+                                                <input class="coloris form-control" type="text" id="theme.text"
+                                                       name="theme.text"
+                                                       th:value="${preferencesDict.get('theme.text')}">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-1">
+                                            <label for="theme.font" class="col-3 col-form-label">Font</label>
+                                            <div class="col-9">
+                                                <input class="form-control" type="text" id="theme.font"
+                                                       name="theme.font"
+                                                       th:value="${preferencesDict.get('theme.font')}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-3"> <!-- NOW PLAYING -->
+                                <div class="card text-black">
+                                    <div class="card-header"><h3>Now Playings (Spotify + Youtube)</h3></div>
+                                    <div class="card-body container-fluid">
+                                        <div class="row mb-1">
+                                            <label for="now-playing.border-radius" class="col-3 col-form-label">Border
+                                                radius</label>
+                                            <div class="col-9">
+                                                <input class="form-control" type="text" id="now-playing.border-radius"
+                                                       name="now-playing.border-radius"
+                                                       th:value="${preferencesDict.get('now-playing.border-radius')}">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <label for="now-playing.border-width" class="col-3 col-form-label">Border
+                                                Width</label>
+                                            <div class="col-9">
+                                                <input class="form-control" type="text" id="now-playing.border-width"
+                                                       name="now-playing.border-width"
+                                                       th:value="${preferencesDict.get('now-playing.border-width')}">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <label for="now-playing.nothing-playing-behavior" class="col-3 col-form-label">
+                                                Nothing Playing Behavior </label>
+                                            <div class="col-9">
+                                                <select class="form-select" id="now-playing.nothing-playing-behavior"
+                                                        name="now-playing.nothing-playing-behavior"
+                                                        th:value="${preferencesDict.get('now-playing.nothing-playing-behavior')}">
+                                                    <option value="placeholder"
+                                                            th:attrappend="selected=${preferencesDict.get('now-playing.nothing-playing-behavior') == 'placeholder'} ? 'selected'">
+                                                        Placeholder
+                                                    </option>
+                                                    <option value="hidden"
+                                                            th:attrappend="selected=${preferencesDict.get('now-playing.nothing-playing-behavior') == 'hidden'} ? 'selected'">
+                                                        Hidden
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <label for="now-playing.border-enable" class="col-3 col-form-label">Border
+                                                Enabled</label>
+                                            <div class="col-9">
+                                                <select class="form-select" id="now-playing.border-enable"
+                                                        name="now-playing.border-enable"
+                                                        th:value="${preferencesDict.get('now-playing.border-enable')}">
+                                                    <option value="true"
+                                                            th:attrappend="selected=${preferencesDict.get('now-playing.border-enable') == 'true'} ? 'selected'">
+                                                        Yes
+                                                    </option>
+                                                    <option value="false"
+                                                            th:attrappend="selected=${preferencesDict.get('now-playing.border-enable') == 'false'} ? 'selected'">
+                                                        No
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-3"> <!-- YOUTUBE -->
+                                <div class="card text-black">
+                                    <div class="card-header"><h3>Youtube</h3></div>
+                                    <div class="card-body container-fluid">
+                                        <div class="row mb-1">
+                                            <p class="m-0 col-3 text-muted">Register the app</p>
+                                            <a class="m-0 col-9 text-reset"
+                                               href="https://console.cloud.google.com/apis/dashboard">Google Cloud API
+                                                Dashboard</a>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <label for="youtube.api-key" class="col-3 col-form-label text-danger">API
+                                                key</label>
+                                            <div class="col-9">
+                                                <input class="form-control" type="text" id="youtube.api-key"
+                                                       name="youtube.api-key"
+                                                       th:value="${preferencesDict.get('youtube.api-key')}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-3"> <!-- SPOTIFY -->
+                                <div class="card text-black">
+                                    <div class="card-header"><h3>Spotify</h3></div>
+                                    <div class="card-body container-fluid">
+                                        <div class="row mb-1">
+                                            <p class="m-0 col-3 text-muted">Register the app</p>
+                                            <a class="m-0 col-9 text-reset"
+                                               href="https://developer.spotify.com/dashboard/login">Spotify Developper
+                                                Dashboard</a>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <label for="spotify.client-id" class="col-3 col-form-label text-danger">Client
+                                                ID</label>
+                                            <div class="col-9">
+                                                <input class="form-control" type="text" id="spotify.client-id"
+                                                       name="spotify.client-id"
+                                                       th:value="${preferencesDict.get('spotify.client-id')}">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <label for="spotify.client-secret" class="col-3 col-form-label text-danger">Client
+                                                Secret</label>
+                                            <div class="col-9">
+                                                <input class="form-control" type="text" id="spotify.client-secret"
+                                                       name="spotify.client-secret"
+                                                       th:value="${preferencesDict.get('spotify.client-secret')}">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <p class="col-3 my-1">Account</p>
+                                            <p class="col-9 my-1" th:if="${user != null}"
+                                               th:text="${user.displayName}"></p>
+                                            <p class="col-9 my-1" th:if="${user == null}">Not Associated</p>
+                                            <span class="col-3"></span>
+                                            <a class="col-9" th:href="${authURI}">Associate account</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+</body>
+<script>
+    Coloris({
+        el: '.coloris',
+        themeMode: 'auto',
+        format: 'rgb'
+    });
+</script>
+</html>
