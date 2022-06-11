@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>StreamerTools - Configuration</title>
+    <title th:text="${'__#{global.app-title}__' + ' - ' + '__#{global.configuration-title}__'}">#App - #Conf</title>
     <link rel="stylesheet" href="/css/home.css">
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -15,20 +15,20 @@
 <header>
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#" th:href="@{/}">StreamerTools</a>
+            <a class="navbar-brand" href="#" th:href="@{/}" th:text="#{global.app-title}">App</a>
         </div>
     </nav>
 </header>
 <section class="container">
     <form method="post" th:action="@{/config}">
-        <div class="row">
+        <div class="row overflow-hidden">
             <div class="col">
                 <div class="card bg-light mt-3">
-                    <div class="card-header"><h2>Widgets</h2></div>
+                    <div class="card-header"><h2 th:text="#{configuration.examples.title}">#examples</h2></div>
                     <div class="card-body container-fluid">
                         <div class="row align-items-center">
-                            <h4 class="col-auto">Timer</h4>
-                            <p class="col-auto m-0 p-0">Le durée se change dans le liens du widget</p>
+                            <h4 class="col-auto" th:text="#{configuration.examples.timer.title}">#Timer</h4>
+                            <p class="col-auto m-0 p-0" th:text="#{configuration.examples.timer.details}">#Details</p>
                         </div>
                         <div class="row">
                             <div class="border rounded border-secondary col-auto p-0 mx-1"
@@ -53,7 +53,7 @@
                                         class="fa-solid fa-link"></i></a>
                             </div>
                         </div>
-                        <h4>Youtube</h4>
+                        <h4 th:text="#{configuration.examples.youtube.title}">#Youtube</h4>
                         <div class="row">
                             <div class="border rounded border-secondary col-auto p-0 mx-1"
                                  style="height: 113px;width: 392px;position: relative">
@@ -77,7 +77,7 @@
                                         class="fa-solid fa-link"></i></a>
                             </div>
                         </div>
-                        <h4>Spotify</h4>
+                        <h4 th:text="#{configuration.examples.spotify.title}">#Spotify</h4>
                         <div class="row">
                             <div class="border rounded border-secondary col-auto p-0 mx-1"
                                  style="height: 113px;width: 392px;position: relative">
@@ -109,17 +109,17 @@
             <div class="col">
                 <div class="card bg-secondary text-white mt-3">
                     <div class="card-header d-flex align-items-center justify-content-start">
-                        <h2>Preferences</h2>
-                        <input type="submit" value="Enregistrer" class="btn btn-success mx-3">
+                        <h2 th:text="#{configuration.preferences.title}">#Preferences</h2>
+                        <input type="submit" th:value="#{generic.save}" class="btn btn-success mx-3">
                     </div>
                     <div class="card-body container-fluid">
                         <div class="row">
                             <div class="col-6 mb-3"> <!-- THEME -->
                                 <div class="card text-black">
-                                    <div class="card-header"><h3>Theme</h3></div>
+                                    <div class="card-header"><h3 th:text="#{configuration.preferences.theme.title}">#Theme</h3></div>
                                     <div class="card-body container-fluid">
                                         <div class="row mb-1">
-                                            <label for="theme.background" class="col-3 col-form-label">Background
+                                            <label for="theme.background" class="col-3 col-form-label" th:text="#{configuration.preferences.theme.bg-color}">#Background
                                                 Color</label>
                                             <div class="col-9">
                                                 <input class="coloris form-control" type="text" id="theme.background"
@@ -129,7 +129,7 @@
                                         </div>
 
                                         <div class="row mb-1">
-                                            <label for="theme.color-accent1" class="col-3 col-form-label">Accent 1
+                                            <label for="theme.color-accent1" class="col-3 col-form-label" th:text="#{configuration.preferences.theme.accent1-color}">#Accent 1
                                                 Color</label>
                                             <div class="col-9">
                                                 <input class="coloris form-control" type="text" id="theme.color-accent1"
@@ -139,7 +139,7 @@
                                         </div>
 
                                         <div class="row mb-1">
-                                            <label for="theme.color-accent2" class="col-3 col-form-label">Accent 2
+                                            <label for="theme.color-accent2" class="col-3 col-form-label" th:text="#{configuration.preferences.theme.accent2-color}">#Accent 2
                                                 Color</label>
                                             <div class="col-9">
                                                 <input class="coloris form-control" type="text" id="theme.color-accent2"
@@ -149,7 +149,7 @@
                                         </div>
 
                                         <div class="row mb-1">
-                                            <label for="theme.text" class="col-3 col-form-label">Text Color</label>
+                                            <label for="theme.text" class="col-3 col-form-label" th:text="#{configuration.preferences.theme.text-color}">#Text Color</label>
                                             <div class="col-9">
                                                 <input class="coloris form-control" type="text" id="theme.text"
                                                        name="theme.text"
@@ -158,7 +158,7 @@
                                         </div>
 
                                         <div class="row mb-1">
-                                            <label for="theme.font" class="col-3 col-form-label">Font</label>
+                                            <label for="theme.font" class="col-3 col-form-label" th:text="#{configuration.preferences.theme.font}">#Font</label>
                                             <div class="col-9">
                                                 <input class="form-control" type="text" id="theme.font"
                                                        name="theme.font"
@@ -170,10 +170,10 @@
                             </div>
                             <div class="col-6 mb-3"> <!-- NOW PLAYING -->
                                 <div class="card text-black">
-                                    <div class="card-header"><h3>Now Playings (Spotify + Youtube)</h3></div>
+                                    <div class="card-header"><h3 th:text="#{configuration.preferences.nowplaying.title}">#Now Playings (Spotify + Youtube)</h3></div>
                                     <div class="card-body container-fluid">
                                         <div class="row mb-1">
-                                            <label for="now-playing.border-radius" class="col-3 col-form-label">Border
+                                            <label for="now-playing.border-radius" class="col-3 col-form-label" th:text="#{configuration.preferences.nowplaying.border-radius}">#Border
                                                 radius</label>
                                             <div class="col-9">
                                                 <input class="form-control" type="text" id="now-playing.border-radius"
@@ -182,7 +182,7 @@
                                             </div>
                                         </div>
                                         <div class="row mb-1">
-                                            <label for="now-playing.border-width" class="col-3 col-form-label">Border
+                                            <label for="now-playing.border-width" class="col-3 col-form-label" th:text="#{configuration.preferences.nowplaying.border-width}">#Border
                                                 Width</label>
                                             <div class="col-9">
                                                 <input class="form-control" type="text" id="now-playing.border-width"
@@ -191,37 +191,37 @@
                                             </div>
                                         </div>
                                         <div class="row mb-1">
-                                            <label for="now-playing.nothing-playing-behavior" class="col-3 col-form-label">
-                                                Nothing Playing Behavior </label>
+                                            <label for="now-playing.nothing-playing-behavior" class="col-3 col-form-label"  th:text="#{configuration.preferences.nowplaying.behaviour}">
+                                                #Nothing Playing Behavior </label>
                                             <div class="col-9">
                                                 <select class="form-select" id="now-playing.nothing-playing-behavior"
                                                         name="now-playing.nothing-playing-behavior"
                                                         th:value="${preferencesDict.get('now-playing.nothing-playing-behavior')}">
                                                     <option value="placeholder"
-                                                            th:attrappend="selected=${preferencesDict.get('now-playing.nothing-playing-behavior') == 'placeholder'} ? 'selected'">
-                                                        Placeholder
+                                                            th:attrappend="selected=${preferencesDict.get('now-playing.nothing-playing-behavior') == 'placeholder'} ? 'selected'" th:text="#{configuration.preferences.nowplaying.behaviour.placeholder}">
+                                                        #Placeholder
                                                     </option>
                                                     <option value="hidden"
-                                                            th:attrappend="selected=${preferencesDict.get('now-playing.nothing-playing-behavior') == 'hidden'} ? 'selected'">
-                                                        Hidden
+                                                            th:attrappend="selected=${preferencesDict.get('now-playing.nothing-playing-behavior') == 'hidden'} ? 'selected'" th:text="#{configuration.preferences.nowplaying.behaviour.hidden}">
+                                                        #Hidden
                                                     </option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="row mb-1">
-                                            <label for="now-playing.border-enable" class="col-3 col-form-label">Border
+                                            <label for="now-playing.border-enable" class="col-3 col-form-label" th:text="#{configuration.preferences.nowplaying.border-enable}">#Border
                                                 Enabled</label>
                                             <div class="col-9">
                                                 <select class="form-select" id="now-playing.border-enable"
                                                         name="now-playing.border-enable"
                                                         th:value="${preferencesDict.get('now-playing.border-enable')}">
                                                     <option value="true"
-                                                            th:attrappend="selected=${preferencesDict.get('now-playing.border-enable') == 'true'} ? 'selected'">
-                                                        Yes
+                                                            th:attrappend="selected=${preferencesDict.get('now-playing.border-enable') == 'true'} ? 'selected'" th:text="#{generic.yes}">
+                                                        #Yes
                                                     </option>
                                                     <option value="false"
-                                                            th:attrappend="selected=${preferencesDict.get('now-playing.border-enable') == 'false'} ? 'selected'">
-                                                        No
+                                                            th:attrappend="selected=${preferencesDict.get('now-playing.border-enable') == 'false'} ? 'selected'" th:text="#{generic.no}">
+                                                        #No
                                                     </option>
                                                 </select>
                                             </div>
@@ -231,16 +231,16 @@
                             </div>
                             <div class="col-6 mb-3"> <!-- YOUTUBE -->
                                 <div class="card text-black">
-                                    <div class="card-header"><h3>Youtube</h3></div>
+                                    <div class="card-header"><h3 th:text="#{configuration.preferences.youtube.title}">#Youtube</h3></div>
                                     <div class="card-body container-fluid">
                                         <div class="row mb-1">
-                                            <p class="m-0 col-3 text-muted">Register the app</p>
+                                            <p class="m-0 col-3 text-muted" th:text="#{configuration.preferences.youtube.register}">#Register the app</p>
                                             <a class="m-0 col-9 text-reset"
                                                href="https://console.cloud.google.com/apis/dashboard">Google Cloud API
                                                 Dashboard</a>
                                         </div>
                                         <div class="row mb-1">
-                                            <label for="youtube.api-key" class="col-3 col-form-label text-danger">API
+                                            <label for="youtube.api-key" class="col-3 col-form-label text-danger" th:text="#{configuration.preferences.youtube.api-key}">API
                                                 key</label>
                                             <div class="col-9">
                                                 <input class="form-control" type="text" id="youtube.api-key"
@@ -253,16 +253,16 @@
                             </div>
                             <div class="col-6 mb-3"> <!-- SPOTIFY -->
                                 <div class="card text-black">
-                                    <div class="card-header"><h3>Spotify</h3></div>
+                                    <div class="card-header"><h3 th:text="#{configuration.preferences.spotify.title}">Spotify</h3></div>
                                     <div class="card-body container-fluid">
                                         <div class="row mb-1">
-                                            <p class="m-0 col-3 text-muted">Register the app</p>
+                                            <p class="m-0 col-3 text-muted" th:text="#{configuration.preferences.spotify.register}">Register the app</p>
                                             <a class="m-0 col-9 text-reset"
                                                href="https://developer.spotify.com/dashboard/login">Spotify Developper
                                                 Dashboard</a>
                                         </div>
                                         <div class="row mb-1">
-                                            <label for="spotify.client-id" class="col-3 col-form-label text-danger">Client
+                                            <label for="spotify.client-id" class="col-3 col-form-label text-danger" th:text="#{configuration.preferences.spotify.client-id}">Client
                                                 ID</label>
                                             <div class="col-9">
                                                 <input class="form-control" type="text" id="spotify.client-id"
@@ -271,7 +271,7 @@
                                             </div>
                                         </div>
                                         <div class="row mb-1">
-                                            <label for="spotify.client-secret" class="col-3 col-form-label text-danger">Client
+                                            <label for="spotify.client-secret" class="col-3 col-form-label text-danger" th:text="#{configuration.preferences.spotify.client-secret}">Client
                                                 Secret</label>
                                             <div class="col-9">
                                                 <input class="form-control" type="text" id="spotify.client-secret"
@@ -280,12 +280,12 @@
                                             </div>
                                         </div>
                                         <div class="row mb-1">
-                                            <p class="col-3 my-1">Account</p>
+                                            <p class="col-3 my-1" th:text="#{configuration.preferences.spotify.account}">Account</p>
                                             <p class="col-9 my-1" th:if="${user != null}"
                                                th:text="${user.displayName}"></p>
-                                            <p class="col-9 my-1" th:if="${user == null}">Not Associated</p>
+                                            <p class="col-9 my-1" th:if="${user == null}" th:text="#{configuration.preferences.spotify.not-associated}">Not Associated</p>
                                             <span class="col-3"></span>
-                                            <a class="col-9" th:href="${authURI}">Associate account</a>
+                                            <a class="col-9" th:href="${authURI}" th:text="#{configuration.preferences.spotify.account-associate}">Associate account</a>
                                         </div>
                                     </div>
                                 </div>
