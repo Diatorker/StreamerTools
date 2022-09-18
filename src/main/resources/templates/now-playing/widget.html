@@ -9,10 +9,13 @@
 <span id="preferences" hidden
       th:data-metadata="${metadataUrl}"
       th:data-behavior="${nothing_playing_behavior}"
+      th:data-background="${color_background}"
+      th:data-progress-enable="${progress_enable}"
+      th:data-progress-color="${progress_color}"
 ></span>
 <div id="np-border" th:if="${mode == 'full'}"
      th:style="'background: ' + ${color_border} + '; border-radius: ' + ${border_radius} + '; padding: ' + ${border_width}">
-    <div id="np-body" th:style="'color: ' + ${color_text} + '; border-radius: ' + ${border_radius} + '; background: ' + ${color_background}">
+    <div id="np-body" th:style="'color: ' + ${color_text} + '; border-radius: ' + ${border_radius} + '; background-image: linear-gradient(90deg, ' + ${progress_color} + ' 0%, ' + ${progress_color} + ' 49%, ' + ${color_background} + ' 51%, ' + ${color_background} + ' 100%)'">
         <img id="np-song-thumbnail" src="https://localhost:8443/img/nothing-playing.png"/>
         <div id="np-song-details">
             <h1 id="np-song-title">Title</h1>
@@ -36,38 +39,70 @@
 </body>
 <script>
     let preferencesDiv = document.getElementById("preferences");
+    let currentProgress = 0
 
     function refreshNP() {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", preferencesDiv.dataset.metadata);
+        //Qurying now playing status update
         xhr.onreadystatechange = function (e) {
             if (xhr.readyState === 4) {
-                // console.log(xhr);
+                //Once query finished : Check status
+                    //200 OK
                 if (xhr.status === 200) {
+                    //parsing response
                     let nowPlaying = JSON.parse(xhr.responseText);
-                    // console.log(nowPlaying.thumbnail);
 
+                    //if nothing is playing AND the default behaviour is to hide the player, we set the entire div to hidden
                     if(preferencesDiv.dataset.behavior === "hidden"){
                         document.querySelector("#np-border").hidden = nowPlaying.thumbnail === null;
                     }
 
+                    //updating the thumbnail to the currently playing song, or if nothing playing we place the default thumbnail
                     let thumb = document.querySelector("#np-song-thumbnail");
                     if(thumb) {
                         if (nowPlaying.thumbnail !== null) {
                             thumb.src = nowPlaying.thumbnail;
                         } else {
                             thumb.src = "https://localhost:8443/img/nothing-playing.png";
-
                         }
                     }
 
+                    //updating the song background to show th song progress
+                    let playerBody = document.querySelector("#np-body")
+                    if(preferencesDiv.dataset.progressEnable === 'true' && nowPlaying.progress !== null){
+                        // console.log("cur:" + currentProgress +", new:" + nowPlaying.progress + ", dif:" + (nowPlaying.progress - currentProgress))
+                        if(currentProgress > nowPlaying.progress || (nowPlaying.progress - currentProgress) > 5.0){
+                            playerBody.style.transition = 'none'
+                            // console.log("skipping")
+                            requestAnimationFrame(function () {
+                                playerBody.style.backgroundPositionX = (100-nowPlaying.progress.toFixed(2)) + "%"
+                                requestAnimationFrame(function () {
+                                    playerBody.style.transition = "background 3s linear 0s"
+                                })
+                            })
+                        }
+                        else{
+                            playerBody.style.backgroundPositionX = (100-nowPlaying.progress.toFixed(2)) + "%"
+                            playerBody.style.transition = "background 3s linear 0s"
+                        }
+                        currentProgress = nowPlaying.progress
+                    }
+                    else {
+                        playerBody.style.backgroundPositionX = "100%"
+                        // console.log("no progress")
+                    }
+
+                    //updating the song title
                     let title = document.querySelector("#np-song-title");
                     if(title)
                         title.textContent = nowPlaying.title;
 
+                    //updating the song author
                     let author = document.querySelector("#np-song-author");
                     if(author)
                         author.textContent = nowPlaying.channel;
+                // any other status : Error
                 } else {
                     console.error(xhr.statusText);
                 }
@@ -80,7 +115,7 @@
         xhr.send();
     }
 
-    setInterval(refreshNP, 2000);
+    setInterval(refreshNP, 1000);
     refreshNP();
 </script>
 </html>

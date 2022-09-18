@@ -26,6 +26,8 @@ public class Preferences {
         public static final String BORDER_WIDTH = "now-playing.border-width";
         public static final String BORDER_ENABLE = "now-playing.border-enable";
         public static final String NOTHING_PLAYING_BEHAVIOR = "now-playing.nothing-playing-behavior";
+        public static final String PROGRESS_ENABLE = "now-playing.progress-enable";
+        public static final String PROGRESS_COLOR = "now-playing.progress-color";
     }
     public static class Youtube {
         public static final String API_KEY = "youtube.api-key";

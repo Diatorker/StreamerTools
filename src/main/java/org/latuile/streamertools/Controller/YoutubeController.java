@@ -49,6 +49,7 @@ public class YoutubeController extends NowPlayingController {
                     youtubeNowPlayingService.getCurrentlyPlaying().getSnippet().getTitle(),
                     youtubeNowPlayingService.getCurrentlyPlaying().getSnippet().getChannelTitle(),
                     true,
+                    null,
                     null
             );
         } else {

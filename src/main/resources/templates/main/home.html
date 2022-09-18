@@ -226,6 +226,34 @@
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <div class="row mb-1">
+                                            <label for="now-playing.progress-enable" class="col-3 col-form-label" th:text="#{configuration.preferences.nowplaying.progress-enable}">#Show Progress</label>
+                                            <div class="col-9">
+                                                <select class="form-select" id="now-playing.progress-enable"
+                                                        name="now-playing.progress-enable"
+                                                        th:value="${preferencesDict.get('now-playing.progress-enable')}">
+                                                    <option value="true"
+                                                            th:attrappend="selected=${preferencesDict.get('now-playing.progress-enable') == 'true'} ? 'selected'" th:text="#{generic.yes}">
+                                                        #Yes
+                                                    </option>
+                                                    <option value="false"
+                                                            th:attrappend="selected=${preferencesDict.get('now-playing.progress-enable') == 'false'} ? 'selected'" th:text="#{generic.no}">
+                                                        #No
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-1">
+                                            <label for="now-playing.progress-color" class="col-3 col-form-label" th:text="#{configuration.preferences.nowplaying.progress-color}">#Progress
+                                                Color</label>
+                                            <div class="col-9">
+                                                <input class="coloris form-control" type="text" id="now-playing.progress-color"
+                                                       name="now-playing.progress-color"
+                                                       th:value="${preferencesDict.get('now-playing.progress-color')}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

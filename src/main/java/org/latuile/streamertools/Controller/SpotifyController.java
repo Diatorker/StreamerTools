@@ -53,7 +53,14 @@ public class SpotifyController extends NowPlayingController {
         try {
             CurrentlyPlayingContext playingContext = spotifyClientService.getCurrentPlayback();
             if(playingContext == null || !playingContext.getIs_playing()){
-                return new NowPlayingInfos();
+                return new NowPlayingInfos(
+                        null,
+                        null,
+                        null,
+                        false,
+                        null,
+                        0.0f
+                );
             }
             switch (playingContext.getCurrentlyPlayingType()){
 
@@ -64,7 +71,8 @@ public class SpotifyController extends NowPlayingController {
                             track.getName(),
                             Arrays.stream(track.getArtists()).map(ArtistSimplified::getName).collect(Collectors.joining(", ")),
                             true,
-                            track.getId()
+                            track.getId(),
+                            ((float)playingContext.getProgress_ms()/track.getDurationMs())*100
                     );
                 case EPISODE: //Not supported right now, returns null when playing episodes...
 //                    Episode episode = (Episode) playingContext.getItem();

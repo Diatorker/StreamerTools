@@ -13,4 +13,5 @@ public class NowPlayingInfos {
     private String Channel;
     private boolean SourceConnected;
     private String ContentId;
+    private Float Progress;
 }

@@ -22,11 +22,12 @@ body {
     display: flex;
     align-items: center;
     flex-direction: row;
-    background: transparent;
-    /*background: #080822;*/
+    background-size: 200% 200%;
+    background-position: 100%;
     border-radius: 6px;
     padding: 0.5rem;
     width: 50rem;
+    /*transition: background 3s linear 0s;*/
 }
 
 #np-song-thumbnail {

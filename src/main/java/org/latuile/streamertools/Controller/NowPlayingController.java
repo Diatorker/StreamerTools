@@ -64,6 +64,19 @@ public abstract class NowPlayingController {
         model.addAttribute("nothing_playing_behavior", preferenceRepository.findById(Preferences.NowPlaying.NOTHING_PLAYING_BEHAVIOR)
                 .orElse(new PreferenceItem(Preferences.NowPlaying.NOTHING_PLAYING_BEHAVIOR, "placeholder")));
 
+        String progressEnable = preferenceRepository.findById(Preferences.NowPlaying.PROGRESS_ENABLE)
+                .orElse(new PreferenceItem(Preferences.NowPlaying.PROGRESS_ENABLE, "true")).getItemValue();
+        model.addAttribute("progress_enable", progressEnable);
+
+        if(progressEnable.equals("true")) {
+            model.addAttribute("progress_color", preferenceRepository.findById(Preferences.NowPlaying.PROGRESS_COLOR)
+                    .orElse(new PreferenceItem(Preferences.NowPlaying.PROGRESS_COLOR, "rgba(1, 1, 1, 0)")));
+        }
+        else {
+            model.addAttribute("progress_color", preferenceRepository.findById(Preferences.Theme.COLOR_BACKGROUND)
+                    .orElse(new PreferenceItem(Preferences.Theme.COLOR_BACKGROUND, "black")));
+        }
+
         switch (mode.toLowerCase(Locale.ROOT)) {
             case "image":
             case "img":
