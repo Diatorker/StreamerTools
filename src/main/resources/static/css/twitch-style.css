@@ -1,0 +1,87 @@
+body {
+    /*font-family: Roboto, Arial, sans-serif;*/
+    font-size: large;
+    color: white;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    margin: 0
+}
+
+#twitch-border {
+    background: transparent;
+    /*background: linear-gradient(45deg, rgba(253, 96, 41, 1) 0%, rgba(253, 96, 41, 1) 40%, rgba(0, 194, 252, 1) 60%, rgba(0, 194, 252, 1) 100%);*/
+    border-radius: 6px;
+    padding: 6px;
+}
+
+#twitch-body {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    background-size: 200% 200%;
+    background-position: 100%;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    width: 50rem;
+    /*transition: background 3s linear 0s;*/
+}
+
+#twitch-poll-question {
+    margin: 1rem 0;
+}
+
+#twitch-poll-answers {
+    width: 100%;
+}
+
+#choice-template {
+    display: none;
+}
+
+#twitch-widget-header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+}
+#twitch-widget-header > i{
+    font-size: xxx-large;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.twitch-poll-choice {
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 0.5rem;
+    width: 100%;
+    overflow: hidden;
+}
+
+.twitch-poll-choice:not(:first-child) {
+    margin-top:0.5rem;
+}
+
+.twitch-poll-choice > div {
+    white-space: nowrap;
+    padding: 0.5rem 0;
+    margin: -1px;
+    border-radius: 0.5rem 0 0 0.5rem;
+    font-size: large;
+}
+
+.failed-choice{
+    opacity: 50%;
+}
+
+.text-white {
+    color: white;
+}
+
+.text-black {
+    color: black;
+}

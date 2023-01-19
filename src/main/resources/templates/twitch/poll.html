@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>StreamerTools - Twitch Poll</title>
+    <link rel="stylesheet" href="/css/twitch-style.css">
+    <link rel="stylesheet" href="/lib/fontawesome/css/all.css">
+</head>
+<body th:style="'font-family:' + ${font_family} + '; align-items: ' + ${align} + '; justify-content: ' + ${justify} + ';'">
+<span id="preferences" hidden
+      th:data-metadata="${metadataUrl}"
+      th:data-progress-enable="${timeout}"
+      th:data-debug="${debugMode}"
+></span>
+<div id="twitch-border"
+     th:style="'background: ' + ${color_border} + '; border-radius: ' + ${border_radius} + '; padding: ' + ${border_width}">
+    <div id="twitch-body" th:style="'color: ' + ${color_text} + '; border-radius: ' + ${border_radius} + '; background: ' + ${color_background} + ';'">
+        <div id="twitch-widget-header">
+            <i class="fa-solid fa-bars-progress"></i>
+            <h1 id="twitch-poll-question">123456789 123456789 123456789 123456789 1234567890</h1>
+        </div>
+        <div id="twitch-poll-answers" th:style="'color: ' + ${choice_text_color} + ';'">
+            <div id="choice-template" class="twitch-poll-choice" th:style="'border-color: ' + ${choice_back_color} + ';'">
+                <div th:style="'width: 10%; background-color: ' + ${choice_back_color} + ';'">&nbsp;&nbsp;(999) 123456789 123456789 12345</div>
+            </div>
+            <div class="twitch-poll-choice" th:style="'color: ' + ${choice_text_color} + ';'">
+                <div th:style="'width: 0; background-color: ' + ${choice_back_color} + ';'">&nbsp;&nbsp;(999) 123456789 123456789 12345</div>
+            </div>
+            <div class="twitch-poll-choice" th:style="'color: ' + ${choice_text_color} + ';'">
+                <div th:style="'width: 50%; background-color: ' + ${choice_back_color} + ';'">&nbsp;&nbsp;(999) 123456789 123456789 12345</div>
+            </div>
+            <div class="twitch-poll-choice" th:style="'color: ' + ${choice_text_color} + ';'">
+                <div th:style="'width: 100%; background-color: ' + ${choice_back_color} + ';'">&nbsp;&nbsp;(999) 123456789 123456789 12345</div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    let preferencesDiv = document.getElementById("preferences");
+    let currentProgress = 0
+
+    function refreshNP() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", preferencesDiv.dataset.metadata);
+        //Qurying now playing status update
+        xhr.onreadystatechange = function (e) {
+            if (xhr.readyState === 4) {
+                //Once query finished : Check status
+                    //200 OK
+                if (xhr.status === 200) {
+                    //parsing response
+                    let pollData = JSON.parse(xhr.responseText);
+                    console.log(pollData);
+
+                    //Hide the poll widget if no polls are running
+                    document.querySelector("#twitch-border").hidden = pollData.question === null;
+
+                    //updating the poll question
+                    let question = document.querySelector("#twitch-poll-question");
+                    question.textContent = pollData.question;
+
+                    //clearing existing poll choices
+                    document.querySelectorAll(".twitch-poll-choice:not(#choice-template)").forEach(elmt => elmt.remove())
+                    //recreating the poll choices
+                    let template = document.querySelector("#choice-template")
+                    let choiceHolder = document.querySelector("#twitch-poll-answers")
+
+                    for (let choice of pollData.choices) {
+                        //cloning template
+                        let choiceElement = template.cloneNode(true);
+
+                        //completing the choice element
+                        choiceElement.removeAttribute('id');
+                        choiceElement.classList.add('twitch-poll-choice');
+                        if(choice.isFailed){
+                            choiceElement.classList.add('failed-choice')
+                        }
+                        choiceElement.children[0].textContent = "\u00a0\u00a0(" + choice.answerCount + ") " + choice.prompt;
+                        choiceElement.children[0].style.width = (choice.answerCount*100/pollData.totalAnswers).toFixed(1) + "%";
+
+                        //adding choice element to choices holder
+                        choiceHolder.append(choiceElement)
+                    }
+
+                // any other status : Error
+                } else {
+                    console.error(xhr.statusText);
+                }
+            }
+        };
+        xhr.onerror = function (e) {
+            console.log("request error");
+            console.error(xhr.statusText);
+        };
+        xhr.send();
+    }
+
+    if(preferencesDiv.dataset.debug !== 'true') {
+        setInterval(refreshNP, 1000);
+        refreshNP();
+    }
+</script>
+</html>

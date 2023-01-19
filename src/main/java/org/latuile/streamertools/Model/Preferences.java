@@ -33,6 +33,14 @@ public class Preferences {
         public static final String API_KEY = "youtube.api-key";
     }
 
+    public static class Twitch {
+        public static final String CHANNEL_ID = "twitch.channel-id";
+        public static final String WIDGET_TIMEOUT = "twitch.widget-timeout";
+        public static final String SHOUTOUT_DURATION = "twitch.shoutout-duration";
+        public static final String CHOICE_TEXT_COLOR = "twitch.choice-text-color";
+        public static final String CHOICE_BACK_COLOR = "twitch.choice-back-color";
+    }
+
     @SneakyThrows
     public static List<String> getKeys(){
         List<Class> PrefClasses = List.of(Preferences.class.getClasses());

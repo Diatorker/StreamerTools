@@ -318,6 +318,54 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-6 mb-3"> <!-- TWITCH -->
+                                <div class="card text-black">
+                                    <div class="card-header"><h3 th:text="#{configuration.preferences.twitch.title}">Twitch</h3></div>
+                                    <div class="card-body container-fluid">
+                                        <div class="row mb-1">
+                                            <label for="twitch.channel-id" class="col-3 col-form-label text-danger" th:text="#{configuration.preferences.twitch.channel-id}">Channel
+                                                ID</label>
+                                            <div class="col-9">
+                                                <input class="form-control" type="text" id="twitch.channel-id"
+                                                       name="twitch.channel-id"
+                                                       th:value="${preferencesDict.get('twitch.channel-id')}">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <label for="twitch.widget-timeout" class="col-3 col-form-label" th:text="#{configuration.preferences.twitch.widget-timeout}">Widget Timeout</label>
+                                            <div class="col-9">
+                                                <input class="form-control" type="number" id="twitch.widget-timeout"
+                                                       name="twitch.widget-timeout"
+                                                       th:value="${preferencesDict.get('twitch.widget-timeout')}">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <label for="twitch.shoutout-duration" class="col-3 col-form-label" th:text="#{configuration.preferences.twitch.shoutout-duration}">Shoutout Duration</label>
+                                            <div class="col-9">
+                                                <input class="form-control" type="text" id="twitch.shoutout-duration"
+                                                       name="twitch.shoutout-duration"
+                                                       th:value="${preferencesDict.get('twitch.shoutout-duration')}">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <label for="twitch.choice-text-color" class="col-3 col-form-label" th:text="#{configuration.preferences.twitch.choice-text-color}">#Choice Text Color</label>
+                                            <div class="col-9">
+                                                <input class="coloris form-control" type="text" id="twitch.choice-text-color"
+                                                       name="twitch.choice-text-color"
+                                                       th:value="${preferencesDict.get('twitch.choice-text-color')}">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-1">
+                                            <label for="twitch.choice-back-color" class="col-3 col-form-label" th:text="#{configuration.preferences.twitch.choice-back-color}">#Choice Back Color</label>
+                                            <div class="col-9">
+                                                <input class="coloris form-control" type="text" id="twitch.choice-back-color"
+                                                       name="twitch.choice-back-color"
+                                                       th:value="${preferencesDict.get('twitch.choice-back-color')}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

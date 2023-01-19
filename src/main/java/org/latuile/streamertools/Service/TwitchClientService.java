@@ -6,53 +6,102 @@ import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
 import com.github.twitch4j.pubsub.PubSubSubscription;
-import com.github.twitch4j.pubsub.events.PollsEvent;
-import com.github.twitch4j.pubsub.events.PredictionCreatedEvent;
-import com.github.twitch4j.pubsub.events.PredictionUpdatedEvent;
+import com.github.twitch4j.pubsub.domain.*;
+import com.github.twitch4j.pubsub.events.*;
+import org.latuile.streamertools.Model.Entity.PreferenceItem;
+import org.latuile.streamertools.Model.Preferences;
+import org.latuile.streamertools.Model.Repository.PreferenceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.stream.Collectors;
 
 @Service
 public class TwitchClientService {
-
+    //Spring interfacing
     private final Logger logger = LoggerFactory.getLogger(TwitchClientService.class);
+    private final PreferenceRepository preferenceRepository;
 
+    //Twitch client objects
+    private String localChannelId;
     private TwitchClient twitchClient;
     private CredentialManager credentialManager;
 
+    //Events Subscription handles
     private PubSubSubscription pollSub;
     private PubSubSubscription prediSub;
+    private PubSubSubscription soSub;
 
+    //Event Handler handles
     private IDisposable pollHandler;
     private IDisposable prediHandler;
+    private IDisposable soHandler;
 
-    //TODO Récupérer l'id de chaine depuis la base de configuration
-    //TODO Stocker les états du dernier poll et de la dernière prediction
-    //TODO Encart de configuration
-    //TODO Restitution dans un widget
+    //Active data holders
+    private PollData pollData;
+    private PredictionEvent predictionEvent;
+    private ShoutoutCreatedEvent shoutoutData;
+
     @Autowired
-    public TwitchClientService() {
-        logger.info("Starting TwitchService class");
+    public TwitchClientService(PreferenceRepository preferenceRepository) {
+        this.preferenceRepository = preferenceRepository;
+        localChannelId = preferenceRepository.findById(Preferences.Twitch.CHANNEL_ID).orElse(new PreferenceItem(Preferences.Twitch.CHANNEL_ID, "")).getItemValue();
 
         twitchClient = TwitchClientBuilder.builder().withEnablePubSub(true).build();
 
-        pollSub = twitchClient.getPubSub().listenForPollEvents(null, "42941889"); // ArnaudRyku
-        pollSub = twitchClient.getPubSub().listenForPollEvents(null, "135074820"); // Will_Aknoow
+//        pollSub = twitchClient.getPubSub().listenForPollEvents(null, "42941889"); // ArnaudRyku
+//        pollSub = twitchClient.getPubSub().listenForPollEvents(null, "135074820"); // Will_Aknoow
+        pollSub = twitchClient.getPubSub().listenForPollEvents(null, localChannelId); // Generi
         pollHandler = twitchClient.getEventManager().getEventHandler(SimpleEventHandler.class).onEvent(PollsEvent.class,
-                event -> logger.info("[" + event.getType().name() + "] " + event.getData().getTitle() + " > " + event.getData().getChoices().stream().map(pollChoice -> pollChoice.getTitle() + " (" + pollChoice.getTotalVoters() + ")").collect(Collectors.joining(", "))));
+//                event -> logger.info("[" + event.getType().name() + "] " + event.getData().getTitle() + " > " + event.getData().getChoices().stream().map(pollChoice -> pollChoice.getTitle() + " (" + pollChoice.getTotalVoters() + ")").collect(Collectors.joining(", "))));
+                event -> pollData = event.getData());
 
-
-        prediSub = twitchClient.getPubSub().listenForChannelPredictionsEvents(null, "42941889"); //ArnaudRyku
-        prediSub = twitchClient.getPubSub().listenForChannelPredictionsEvents(null, "135074820"); //Will_Aknoow
+//        prediSub = twitchClient.getPubSub().listenForChannelPredictionsEvents(null, "42941889"); //ArnaudRyku
+//        prediSub = twitchClient.getPubSub().listenForChannelPredictionsEvents(null, "135074820"); //Will_Aknoow
+        prediSub = twitchClient.getPubSub().listenForChannelPredictionsEvents(null, localChannelId); //Generic
         prediHandler = twitchClient.getEventManager().getEventHandler(SimpleEventHandler.class).onEvent(PredictionCreatedEvent.class,
-                event -> logger.info("[PREDI_CREATED] " + event.getEvent().getTitle() + " > " + event.getEvent().getOutcomes().stream().map(outcome -> outcome.getTitle() + " (" + outcome.getTotalUsers() + "u > " + outcome.getTotalPoints() + "pt)").collect(Collectors.joining(", "))));
+//                event -> logger.info("[PREDI_CREATED] " + event.getEvent().getTitle() + " > " + event.getEvent().getOutcomes().stream().map(outcome -> outcome.getTitle() + " (" + outcome.getTotalUsers() + "u > " + outcome.getTotalPoints() + "pt)").collect(Collectors.joining(", "))));
+                event -> predictionEvent = event.getEvent());
         prediHandler = twitchClient.getEventManager().getEventHandler(SimpleEventHandler.class).onEvent(PredictionUpdatedEvent.class,
-                event -> logger.info("[PREDI_UPDATE] " + event.getEvent().getTitle() + " > " + event.getEvent().getOutcomes().stream().map(outcome -> outcome.getTitle() + " (" + outcome.getTotalUsers() + "u > " + outcome.getTotalPoints() + "pt)").collect(Collectors.joining(", "))));
+//                event -> logger.info("[PREDI_UPDATE] " + event.getEvent().getTitle() + " > " + event.getEvent().getOutcomes().stream().map(outcome -> outcome.getTitle() + " (" + outcome.getTotalUsers() + "u > " + outcome.getTotalPoints() + "pt)").collect(Collectors.joining(", "))));
+                event -> predictionEvent = event.getEvent());
+
+//        soSub = twitchClient.getPubSub().listenForShoutoutEvents(null, "42941889");
+//        soSub = twitchClient.getPubSub().listenForShoutoutEvents(null, "135074820");
+        soSub = twitchClient.getPubSub().listenForShoutoutEvents(null, localChannelId);
+        soHandler = twitchClient.getEventManager().getEventHandler(SimpleEventHandler.class).onEvent(ShoutoutCreatedEvent.class,
+                event -> logger.info("[SHOUTOUT] " + event.getData().getTargetDisplayName() + "(" + event.getData().getTargetUserColorHex() + ")"));
+//                event -> shoutoutData = event);
     }
+
+    public PollData getPollData() {
+        long dataTimeout = Long.parseLong(preferenceRepository.findById(Preferences.Twitch.WIDGET_TIMEOUT).orElse(new PreferenceItem(Preferences.Twitch.WIDGET_TIMEOUT, "10")).getItemValue());
+        if(pollData != null && pollData.getEndedAt() != null && pollData.getEndedAt().plusSeconds(dataTimeout).isBefore(Instant.now())){
+            pollData = null;
+        }
+        return pollData;
+    }
+
+    public PredictionEvent getPredictionEvent() {
+        long dataTimeout = Long.parseLong(preferenceRepository.findById(Preferences.Twitch.WIDGET_TIMEOUT).orElse(new PreferenceItem(Preferences.Twitch.WIDGET_TIMEOUT, "10")).getItemValue());
+        if(predictionEvent != null && predictionEvent.getEndedAt() != null && predictionEvent.getEndedAt().plusSeconds(dataTimeout).isBefore(Instant.now())){
+            predictionEvent = null;
+        }
+        return predictionEvent;
+    }
+
+    public CreateShoutoutData getShoutoutData() {
+        long shoutoutDuration = Long.parseLong(preferenceRepository.findById(Preferences.Twitch.SHOUTOUT_DURATION).orElse(new PreferenceItem(Preferences.Twitch.SHOUTOUT_DURATION, "10")).getItemValue());
+        if(shoutoutData != null && shoutoutData.getFiredAtInstant().plusSeconds(shoutoutDuration).isBefore(Instant.now())){
+            shoutoutData = null;
+        }
+        return shoutoutData != null ? shoutoutData.getData() : null;
+    }
+}
+
     /*
     EVENT EXAMPLES
 PollsEvent(type=POLL_CREATE, data=PollData(pollId=a372b407-bb35-4b81-80c7-547f7e8648f1, ownedBy=135074820, createdBy=72738644, title=Choisissez :, startedAt=2023-01-12T20:04:23.486743288Z, endedAt=null, endedBy=null, durationSeconds=60, settings=PollData.PollSettings(multiChoice=PollData.PollSettings.Setting(isEnabled=true, cost=null), subscriberOnly=PollData.PollSettings.Setting(isEnabled=false, cost=null), subscriberMultiplier=PollData.PollSettings.Setting(isEnabled=false, cost=null), bitsVotes=PollData.PollSettings.Setting(isEnabled=false, cost=0), channelPointsVotes=PollData.PollSettings.Setting(isEnabled=false, cost=0)), status=ACTIVE, choices=[PollData.PollChoice(choiceId=ce0aa982-c715-48ca-8b92-764efd9b132f, title=Pain au chocolat, votes=PollData.Votes(total=0, bits=0, channelPoints=0, base=0), tokens=PollData.Tokens(bits=0, channelPoints=0), totalVoters=0), PollData.PollChoice(choiceId=09b342b3-aa06-409c-b495-613d30b8aab5, title=Croissant, votes=PollData.Votes(total=0, bits=0, channelPoints=0, base=0), tokens=PollData.Tokens(bits=0, channelPoints=0), totalVoters=0), PollData.PollChoice(choiceId=94a0b802-0c98-4a4c-a078-07a3671a8963, title=Pain au raisin, votes=PollData.Votes(total=0, bits=0, channelPoints=0, base=0), tokens=PollData.Tokens(bits=0, channelPoints=0), totalVoters=0)], votes=PollData.Votes(total=0, bits=0, channelPoints=0, base=0), tokens=PollData.Tokens(bits=0, channelPoints=0), totalVoters=0, remainingDurationMilliseconds=59982, topContributor=null, topBitsContributor=null, topChannelPointsContributor=null))
@@ -78,4 +127,3 @@ PredictionUpdatedEvent(timestamp=2023-01-12T20:10:59.242628429Z, event=Predictio
 PredictionUpdatedEvent(timestamp=2023-01-12T20:10:59.972355012Z, event=PredictionEvent(id=642a2e38-3cb0-4bfe-80f9-fa680c00faa4, channelId=135074820, createdAt=2023-01-12T20:09:47.183698245Z, createdBy=PredictionTrigger(type=USER, userId=72738644, userDisplayName=Diatorker, extensionClientId=null), endedAt=2023-01-12T20:10:58.966216786Z, endedBy=PredictionTrigger(type=USER, userId=72738644, userDisplayName=Diatorker, extensionClientId=null), lockedAt=2023-01-12T20:10:16.307915754Z, lockedBy=null, outcomes=[PredictionOutcome(id=6de3d3fb-c074-4032-8faa-9810eed72c64, color=BLUE, title=Les bleus, totalPoints=29782, totalUsers=3, topPredictors=[Prediction(id=6d825f7ab0d2d46cb81584c7563321bb2218a4e3d8e2858cf6222d3e5d3fb87e, eventId=642a2e38-3cb0-4bfe-80f9-fa680c00faa4, outcomeId=6de3d3fb-c074-4032-8faa-9810eed72c64, channelId=135074820, points=22272, predictedAt=2023-01-12T20:09:59.783913444Z, updatedAt=2023-01-12T20:10:13.600802996Z, userId=490169568, result=PredictionResult(type=REFUND, pointsWon=null, isAcknowledged=false), userDisplayName=laetichaise), Prediction(id=b4650c913c3a3acfb97f848281b89e46fdf47d06d2780afe63d3c6bb231044c9, eventId=642a2e38-3cb0-4bfe-80f9-fa680c00faa4, outcomeId=6de3d3fb-c074-4032-8faa-9810eed72c64, channelId=135074820, points=7010, predictedAt=2023-01-12T20:10:09.160513983Z, updatedAt=2023-01-12T20:10:15.355888133Z, userId=247339249, result=PredictionResult(type=REFUND, pointsWon=null, isAcknowledged=false), userDisplayName=Holonne_), Prediction(id=c347055d98b0f8bab5bd15302ba95914730b60b831f2e75b0a956ac004b5228a, eventId=642a2e38-3cb0-4bfe-80f9-fa680c00faa4, outcomeId=6de3d3fb-c074-4032-8faa-9810eed72c64, channelId=135074820, points=500, predictedAt=2023-01-12T20:10:12.410617488Z, updatedAt=2023-01-12T20:10:12.410617488Z, userId=856630753, result=PredictionResult(type=REFUND, pointsWon=null, isAcknowledged=false), userDisplayName=jiibmy)]), PredictionOutcome(id=823b949c-a02b-4330-97fa-ab4ac3eb68b1, color=PINK, title=Les roses, totalPoints=2722, totalUsers=1, topPredictors=[Prediction(id=b008f47a9b57df31e31810e96e17ab28b52f521af948169f2319387299e7b53c, eventId=642a2e38-3cb0-4bfe-80f9-fa680c00faa4, outcomeId=823b949c-a02b-4330-97fa-ab4ac3eb68b1, channelId=135074820, points=2722, predictedAt=2023-01-12T20:10:04.961899356Z, updatedAt=2023-01-12T20:10:04.961899356Z, userId=477109553, result=PredictionResult(type=REFUND, pointsWon=null, isAcknowledged=false), userDisplayName=CATAriellove)])], predictionWindowSeconds=30, status=CANCELED, title=Qui donne le plus de points (je rembourse), winningOutcomeId=null))
 
      */
-}
