@@ -16,8 +16,8 @@ public class PrediDisplayData {
         choices = new ArrayList<>();
     }
 
-    public void addPrompt(String prompt, Long count, Long amount, Boolean isFailed){
-        choices.add(new PrediChoice(prompt, count, amount, isFailed));
+    public void addPrompt(String prompt, Long count, Long amount, Boolean isFailed, String color){
+        choices.add(new PrediChoice(prompt, count, amount, isFailed, color));
     }
 }
 
@@ -27,4 +27,5 @@ class PrediChoice {
     private Long predictionCount;
     private Long predictionAmount;
     private Boolean isFailed;
+    private String color;
 }

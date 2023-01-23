@@ -39,6 +39,7 @@ public class Preferences {
         public static final String SHOUTOUT_DURATION = "twitch.shoutout-duration";
         public static final String CHOICE_TEXT_COLOR = "twitch.choice-text-color";
         public static final String CHOICE_BACK_COLOR = "twitch.choice-back-color";
+        public static final String PREDI_TWITCH_COLOR = "twitch.predi-twitch-color";
     }
 
     @SneakyThrows

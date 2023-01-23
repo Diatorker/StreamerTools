@@ -57,17 +57,17 @@ public class TwitchClientService {
         pollSub = twitchClient.getPubSub().listenForPollEvents(null, localChannelId); // Generi
         pollHandler = twitchClient.getEventManager().getEventHandler(SimpleEventHandler.class).onEvent(PollsEvent.class,
 //                event -> logger.info("[" + event.getType().name() + "] " + event.getData().getTitle() + " > " + event.getData().getChoices().stream().map(pollChoice -> pollChoice.getTitle() + " (" + pollChoice.getTotalVoters() + ")").collect(Collectors.joining(", "))));
-                event -> pollData = event.getData());
+                event -> setPollData(event.getData()));
 
 //        prediSub = twitchClient.getPubSub().listenForChannelPredictionsEvents(null, "42941889"); //ArnaudRyku
 //        prediSub = twitchClient.getPubSub().listenForChannelPredictionsEvents(null, "135074820"); //Will_Aknoow
         prediSub = twitchClient.getPubSub().listenForChannelPredictionsEvents(null, localChannelId); //Generic
         prediHandler = twitchClient.getEventManager().getEventHandler(SimpleEventHandler.class).onEvent(PredictionCreatedEvent.class,
 //                event -> logger.info("[PREDI_CREATED] " + event.getEvent().getTitle() + " > " + event.getEvent().getOutcomes().stream().map(outcome -> outcome.getTitle() + " (" + outcome.getTotalUsers() + "u > " + outcome.getTotalPoints() + "pt)").collect(Collectors.joining(", "))));
-                event -> predictionEvent = event.getEvent());
+                event -> setPredictionEvent(event.getEvent()));
         prediHandler = twitchClient.getEventManager().getEventHandler(SimpleEventHandler.class).onEvent(PredictionUpdatedEvent.class,
 //                event -> logger.info("[PREDI_UPDATE] " + event.getEvent().getTitle() + " > " + event.getEvent().getOutcomes().stream().map(outcome -> outcome.getTitle() + " (" + outcome.getTotalUsers() + "u > " + outcome.getTotalPoints() + "pt)").collect(Collectors.joining(", "))));
-                event -> predictionEvent = event.getEvent());
+                event -> setPredictionEvent(event.getEvent()));
 
 //        soSub = twitchClient.getPubSub().listenForShoutoutEvents(null, "42941889");
 //        soSub = twitchClient.getPubSub().listenForShoutoutEvents(null, "135074820");
@@ -75,6 +75,20 @@ public class TwitchClientService {
         soHandler = twitchClient.getEventManager().getEventHandler(SimpleEventHandler.class).onEvent(ShoutoutCreatedEvent.class,
                 event -> logger.info("[SHOUTOUT] " + event.getData().getTargetDisplayName() + "(" + event.getData().getTargetUserColorHex() + ")"));
 //                event -> shoutoutData = event);
+    }
+
+    private void setPollData(PollData inPollData){
+        if(pollData == null || !pollData.getPollId().equals(inPollData.getPollId())){
+            logger.info("Received new poll : " + inPollData.getTitle());
+        }
+        pollData = inPollData;
+    }
+
+    private void setPredictionEvent(PredictionEvent inPredi){
+        if(predictionEvent == null || !predictionEvent.getId().equals(inPredi.getId())){
+            logger.info("Received new Prediction : " + inPredi.getTitle());
+        }
+        predictionEvent = inPredi;
     }
 
     public PollData getPollData() {

@@ -363,6 +363,23 @@
                                                        th:value="${preferencesDict.get('twitch.choice-back-color')}">
                                             </div>
                                         </div>
+                                        <div class="row mb-1">
+                                            <label for="twitch.predi-twitch-color" class="col-3 col-form-label" th:text="#{configuration.preferences.twitch.predi-twitch-color}">#Show Progress</label>
+                                            <div class="col-9">
+                                                <select class="form-select" id="twitch.predi-twitch-color"
+                                                        name="twitch.predi-twitch-color"
+                                                        th:value="${preferencesDict.get('twitch.predi-twitch-color')}">
+                                                    <option value="false"
+                                                            th:attrappend="selected=${preferencesDict.get('twitch.predi-twitch-color') == 'false'} ? 'selected'" th:text="#{generic.no}">
+                                                        #No
+                                                    </option>
+                                                    <option value="true"
+                                                            th:attrappend="selected=${preferencesDict.get('twitch.predi-twitch-color') == 'true'} ? 'selected'" th:text="#{generic.yes}">
+                                                        #Yes
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

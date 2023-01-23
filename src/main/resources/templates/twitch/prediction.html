@@ -23,13 +23,13 @@
             <div id="choice-template" class="twitch-poll-choice" th:style="'border-color: ' + ${choice_back_color} + ';'">
                 <div th:style="'width: 10%; background-color: ' + ${choice_back_color} + ';'">&nbsp;&nbsp;(999) 123456789 123456789 12345</div>
             </div>
-            <div class="twitch-poll-choice" th:style="'color: ' + ${choice_text_color} + ';'">
+            <div class="twitch-poll-choice" th:style="'border-color: ' + ${choice_back_color} + ';'">
                 <div th:style="'width: 0; background-color: ' + ${choice_back_color} + ';'">&nbsp;&nbsp;(999) 123456789 123456789 12345</div>
             </div>
-            <div class="twitch-poll-choice" th:style="'color: ' + ${choice_text_color} + ';'">
+            <div class="twitch-poll-choice" th:style="'border-color: ' + ${choice_back_color} + ';'">
                 <div th:style="'width: 50%; background-color: ' + ${choice_back_color} + ';'">&nbsp;&nbsp;(999) 123456789 123456789 12345</div>
             </div>
-            <div class="twitch-poll-choice" th:style="'color: ' + ${choice_text_color} + ';'">
+            <div class="twitch-poll-choice" th:style="'border-color: ' + ${choice_back_color} + ';'">
                 <div th:style="'width: 100%; background-color: ' + ${choice_back_color} + ';'">&nbsp;&nbsp;(999) 123456789 123456789 12345</div>
             </div>
         </div>
@@ -82,15 +82,23 @@
                             pttext = choice.predictionAmount.toFixed(0)
                         }
 
+                        //Computing choice width
+                        let choiceWidth = 0.0;
+                        if(pollData.totalAmount > 0){
+                            choiceWidth = choice.predictionAmount*100/pollData.totalAmount;
+                        }
+
                         //completing the choice element
                         console.log(choice);
                         choiceElement.removeAttribute('id');
                         choiceElement.classList.add('twitch-poll-choice');
+                        choiceElement.style.borderColor = choice.color;
                         if(choice.isFailed){
                             choiceElement.classList.add('failed-choice')
                         }
                         choiceElement.children[0].textContent = "\u00a0\u00a0(" + choice.predictionCount + " v / " + pttext + " pt) " + choice.prompt;
-                        choiceElement.children[0].style.width = (choice.predictionAmount*100/pollData.totalAmount).toFixed(1) + "%";
+                        choiceElement.children[0].style.width = choiceWidth.toFixed(1) + "%";
+                        choiceElement.children[0].style.backgroundColor = choice.color;
 
                         //adding choice element to choices holder
                         choiceHolder.append(choiceElement)

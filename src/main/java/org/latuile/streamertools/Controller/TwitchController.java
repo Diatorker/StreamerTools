@@ -1,6 +1,7 @@
 package org.latuile.streamertools.Controller;
 
 import com.github.twitch4j.pubsub.domain.PollData;
+import com.github.twitch4j.pubsub.domain.PredictionColor;
 import com.github.twitch4j.pubsub.domain.PredictionEvent;
 import org.latuile.streamertools.Model.Entity.PreferenceItem;
 import org.latuile.streamertools.Model.Preferences;
@@ -76,7 +77,6 @@ public class TwitchController {
 
         model.addAttribute("timeout", Integer.valueOf(preferenceRepository.findById(Preferences.Twitch.WIDGET_TIMEOUT)
                 .orElse(new PreferenceItem(Preferences.Twitch.WIDGET_TIMEOUT, "10")).getItemValue()));
-        model.addAttribute("metadataUrl", "https://localhost:8443/twitch/metadata/poll/");
         model.addAttribute("debugMode", debug);
 
         switch (pos){
@@ -113,6 +113,7 @@ public class TwitchController {
             @RequestParam(name="debug", defaultValue = "false") Boolean debug
     ){
         prepareTwitchWidgetModel(model, pos, frame, debug);
+        model.addAttribute("metadataUrl", "https://localhost:8443/twitch/metadata/poll/");
 
         return "twitch/poll";
     }
@@ -125,6 +126,7 @@ public class TwitchController {
             @RequestParam(name="debug", defaultValue = "false") Boolean debug
     ){
         prepareTwitchWidgetModel(model, pos, frame, debug);
+        model.addAttribute("metadataUrl", "https://localhost:8443/twitch/metadata/prediction/");
 
         return "twitch/prediction";
     }
@@ -164,17 +166,33 @@ public class TwitchController {
     public @ResponseBody PrediDisplayData getPrediMetadata(){
         PredictionEvent prediData = twitchClientService.getPredictionEvent();
         PrediDisplayData result = new PrediDisplayData();
+        boolean twitchColor = Boolean.parseBoolean(preferenceRepository.findById(Preferences.Twitch.PREDI_TWITCH_COLOR)
+                .orElse(new PreferenceItem(Preferences.Twitch.PREDI_TWITCH_COLOR, "false")).getItemValue());
+        String prefChoiceBackColor = preferenceRepository.findById(Preferences.Twitch.CHOICE_BACK_COLOR)
+                .orElse(new PreferenceItem("", "gray")).getItemValue();
 
         if(prediData != null) {
             result.setQuestion(prediData.getTitle());
             result.setTotalAmount(
                     prediData.getOutcomes().stream()
                             .mapToLong(outcome -> {
+                                String choiceColor = prefChoiceBackColor;
+                                if(twitchColor){
+                                    switch (outcome.getColor()){
+                                        case BLUE:
+                                            choiceColor = "#387aff";
+                                            break;
+                                        case PINK:
+                                            choiceColor = "#f5009b";
+                                            break;
+                                    }
+                                }
                                 result.addPrompt(
                                         outcome.getTitle(),
                                         outcome.getTotalUsers().longValue(),
                                         outcome.getTotalPoints().longValue(),
-                                        !outcome.getId().equals(prediData.getWinningOutcomeId()) && prediData.getEndedAt() != null
+                                        !outcome.getId().equals(prediData.getWinningOutcomeId()) && prediData.getEndedAt() != null,
+                                        choiceColor
                                 );
                                 return outcome.getTotalPoints().longValue();
                             })
