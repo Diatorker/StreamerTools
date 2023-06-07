@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.stream.Collectors;
 
 @Service
 public class TwitchClientService {
@@ -94,6 +93,11 @@ public class TwitchClientService {
     public PollData getPollData() {
         long dataTimeout = Long.parseLong(preferenceRepository.findById(Preferences.Twitch.WIDGET_TIMEOUT).orElse(new PreferenceItem(Preferences.Twitch.WIDGET_TIMEOUT, "10")).getItemValue());
         if(pollData != null && pollData.getEndedAt() != null && pollData.getEndedAt().plusSeconds(dataTimeout).isBefore(Instant.now())){
+            StringBuilder discardMsg = new StringBuilder("Discarding poll \n PREDICTION: " + pollData.getTitle());
+            for (PollData.PollChoice choice: pollData.getChoices()) {
+                discardMsg.append("\n-> [").append(choice.getVotes().getTotal()).append("] ").append(choice.getTitle());
+            }
+            logger.info(discardMsg.toString());
             pollData = null;
         }
         return pollData;
@@ -102,6 +106,11 @@ public class TwitchClientService {
     public PredictionEvent getPredictionEvent() {
         long dataTimeout = Long.parseLong(preferenceRepository.findById(Preferences.Twitch.WIDGET_TIMEOUT).orElse(new PreferenceItem(Preferences.Twitch.WIDGET_TIMEOUT, "10")).getItemValue());
         if(predictionEvent != null && predictionEvent.getEndedAt() != null && predictionEvent.getEndedAt().plusSeconds(dataTimeout).isBefore(Instant.now())){
+            StringBuilder discardMsg = new StringBuilder("Discarding prediction \n POLL: " + predictionEvent.getTitle());
+            for (PredictionOutcome choice: predictionEvent.getOutcomes()) {
+                discardMsg.append("\n-> [").append(choice.getTotalPoints()).append("] ").append(choice.getTitle());
+            }
+            logger.info(discardMsg.toString());
             predictionEvent = null;
         }
         return predictionEvent;
@@ -110,6 +119,7 @@ public class TwitchClientService {
     public CreateShoutoutData getShoutoutData() {
         long shoutoutDuration = Long.parseLong(preferenceRepository.findById(Preferences.Twitch.SHOUTOUT_DURATION).orElse(new PreferenceItem(Preferences.Twitch.SHOUTOUT_DURATION, "10")).getItemValue());
         if(shoutoutData != null && shoutoutData.getFiredAtInstant().plusSeconds(shoutoutDuration).isBefore(Instant.now())){
+            String discardMsg = "Discarding SO [" + shoutoutData.getData().getTargetDisplayName() + "]";
             shoutoutData = null;
         }
         return shoutoutData != null ? shoutoutData.getData() : null;
