@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'org.latuile'
-version = '2.1.0'
+version = '2.1.1'
 archivesBaseName = 'StreamerTools'
 sourceCompatibility = '11'
 
