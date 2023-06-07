@@ -44,3 +44,13 @@ Cette section s’applique aux widgets de lecture en cours (Spotify, Youtube)
 | Client Secret | Client Secret pour authentifier Streamer Tools avec l’API Spotify. <br/> **Il faut redémarrer Streamer Tools pour prendre en compte le changement de Client Secret**                                              | Spotify      |
 | Account       | Le compte Spotify suivis par Streamer Tool. Cliquez sur Associate Account pour associez le compte Spotify connectez à votre navigateur. Le Client ID et le Client Secret doivent être correctement renseignés | Spotify      |
 
+## Section Twitch
+Cette section s’applique aux widgets Twitch
+
+| Paramètre                   | Description                                                                                                                    | Utilisé dans                      |
+|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------|-----------------------------------|
+| ID Chaine                   | ID numérique de la chaine Twitch. <br/> **Il faut redémarrer Streamer Tools pour prendre en compte le changement d'ID Chaine** | Twitch/Poll<br/>Twitch/Prediction |
+| Temps Maintiens Widgets     | C'est le temps en seconde pendant lequel les widgets resteront affichés une fois un évènement terminé                          | Twitch/Poll<br/>Twitch/Prediction |
+| Couleur du texte des choix  | Couleur utilisé pour le texte et la bordure des choix                                                                          | Twitch/Poll<br/>Twitch/Prediction |
+| Couleur de fond des choix   | Couleur utilisé pour la barre de progression des choix                                                                         | Twitch/Poll<br/>Twitch/Prediction |
+| Prédi. avec couleurs Tiwtch | Si oui la couleur de fond utilisé pour le choix des prédictions utilise le thème de couleur de Twitch (Rose et Bleu).          | Twitch/Prediction                 |

@@ -21,11 +21,17 @@
 </header>
 <section class="container">
     <form method="post" th:action="@{/config}">
+        <!--/*#############################
+              #          SAMPLES          #
+              #############################*/-->
         <div class="row overflow-hidden">
             <div class="col">
                 <div class="card bg-light mt-3">
                     <div class="card-header"><h2 th:text="#{configuration.examples.title}">#examples</h2></div>
                     <div class="card-body container-fluid">
+                        <!--/*
+                                         TIMER
+                              ###########################*/-->
                         <div class="row align-items-center">
                             <h4 class="col-auto" th:text="#{configuration.examples.timer.title}">#Timer</h4>
                             <p class="col-auto m-0 p-0" th:text="#{configuration.examples.timer.details}">#Details</p>
@@ -53,6 +59,9 @@
                                         class="fa-solid fa-link"></i></a>
                             </div>
                         </div>
+                        <!--/*
+                                        YOUTUBE
+                              ###########################*/-->
                         <h4 th:text="#{configuration.examples.youtube.title}">#Youtube</h4>
                         <div class="row">
                             <div class="border rounded border-secondary col-auto p-0 mx-1"
@@ -77,6 +86,9 @@
                                         class="fa-solid fa-link"></i></a>
                             </div>
                         </div>
+                        <!--/*
+                                        SPOTIFY
+                              ###########################*/-->
                         <h4 th:text="#{configuration.examples.spotify.title}">#Spotify</h4>
                         <div class="row">
                             <div class="border rounded border-secondary col-auto p-0 mx-1"
@@ -101,10 +113,33 @@
                                         class="fa-solid fa-link"></i></a>
                             </div>
                         </div>
+                        <!--/*
+                                         TWITCH
+                              ###########################*/-->
+                        <h4 th:text="#{configuration.examples.twitch.title}">#Twitch</h4>
+                        <div class="row">
+                            <div class="border rounded border-secondary col-auto p-0 mx-1"
+                                 style="height: 113px;width: 392px;position: relative">
+                                <iframe th:src="@{'/twitch/poll'}" class="scale-45" width="870"
+                                        height="250"></iframe>
+                                <a class="widget-button btn btn-sm btn-primary" th:href="@{'/twitch/poll'}"><i
+                                        class="fa-solid fa-link"></i></a>
+                            </div>
+                            <div class="border rounded border-secondary col-auto p-0 mx-1"
+                                 style="height: 113px;width: 392px;position: relative">
+                                <iframe th:src="@{'/twitch/prediction'}" class="scale-45" width="870"
+                                        height="250"></iframe>
+                                <a class="widget-button btn btn-sm btn-primary" th:href="@{'/twitch/prediction'}"><i
+                                        class="fa-solid fa-link"></i></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!--/*#############################
+              #        PREFERENCES        #
+              #############################*/-->
         <div class="row">
             <div class="col">
                 <div class="card bg-secondary text-white mt-3">
@@ -112,9 +147,12 @@
                         <h2 th:text="#{configuration.preferences.title}">#Preferences</h2>
                         <input type="submit" th:value="#{generic.save}" class="btn btn-success mx-3">
                     </div>
+                    <!--/*
+                                     THEME
+                          ###########################*/-->
                     <div class="card-body container-fluid">
                         <div class="row">
-                            <div class="col-6 mb-3"> <!-- THEME -->
+                            <div class="col-6 mb-3">
                                 <div class="card text-black">
                                     <div class="card-header"><h3 th:text="#{configuration.preferences.theme.title}">#Theme</h3></div>
                                     <div class="card-body container-fluid">
@@ -127,7 +165,6 @@
                                                        th:value="${preferencesDict.get('theme.background')}">
                                             </div>
                                         </div>
-
                                         <div class="row mb-1">
                                             <label for="theme.color-accent1" class="col-3 col-form-label" th:text="#{configuration.preferences.theme.accent1-color}">#Accent 1
                                                 Color</label>
@@ -137,7 +174,6 @@
                                                        th:value="${preferencesDict.get('theme.color-accent1')}">
                                             </div>
                                         </div>
-
                                         <div class="row mb-1">
                                             <label for="theme.color-accent2" class="col-3 col-form-label" th:text="#{configuration.preferences.theme.accent2-color}">#Accent 2
                                                 Color</label>
@@ -147,7 +183,6 @@
                                                        th:value="${preferencesDict.get('theme.color-accent2')}">
                                             </div>
                                         </div>
-
                                         <div class="row mb-1">
                                             <label for="theme.text" class="col-3 col-form-label" th:text="#{configuration.preferences.theme.text-color}">#Text Color</label>
                                             <div class="col-9">
@@ -156,7 +191,6 @@
                                                        th:value="${preferencesDict.get('theme.text')}">
                                             </div>
                                         </div>
-
                                         <div class="row mb-1">
                                             <label for="theme.font" class="col-3 col-form-label" th:text="#{configuration.preferences.theme.font}">#Font</label>
                                             <div class="col-9">
@@ -168,7 +202,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6 mb-3"> <!-- NOW PLAYING -->
+                            <!--/*
+                                          NOW PLAYING
+                                  ###########################*/-->
+                            <div class="col-6 mb-3">
                                 <div class="card text-black">
                                     <div class="card-header"><h3 th:text="#{configuration.preferences.nowplaying.title}">#Now Playings (Spotify + Youtube)</h3></div>
                                     <div class="card-body container-fluid">
@@ -257,7 +294,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6 mb-3"> <!-- YOUTUBE -->
+                            <!--/*
+                                            YOUTUBE
+                                  ###########################*/-->
+                            <div class="col-6 mb-3">
                                 <div class="card text-black">
                                     <div class="card-header"><h3 th:text="#{configuration.preferences.youtube.title}">#Youtube</h3></div>
                                     <div class="card-body container-fluid">
@@ -279,7 +319,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6 mb-3"> <!-- SPOTIFY -->
+                            <!--/*
+                                             SPOTIFY
+                                  ###########################*/-->
+                            <div class="col-6 mb-3">
                                 <div class="card text-black">
                                     <div class="card-header"><h3 th:text="#{configuration.preferences.spotify.title}">Spotify</h3></div>
                                     <div class="card-body container-fluid">
@@ -318,7 +361,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6 mb-3"> <!-- TWITCH -->
+                            <!--/*
+                                             TWITCH
+                                  ###########################*/-->
+                            <div class="col-6 mb-3">
                                 <div class="card text-black">
                                     <div class="card-header"><h3 th:text="#{configuration.preferences.twitch.title}">Twitch</h3></div>
                                     <div class="card-body container-fluid">
@@ -339,7 +385,7 @@
                                                        th:value="${preferencesDict.get('twitch.widget-timeout')}">
                                             </div>
                                         </div>
-                                        <div class="row mb-1">
+                                        <div class="row mb-1 d-none">
                                             <label for="twitch.shoutout-duration" class="col-3 col-form-label" th:text="#{configuration.preferences.twitch.shoutout-duration}">Shoutout Duration</label>
                                             <div class="col-9">
                                                 <input class="form-control" type="text" id="twitch.shoutout-duration"

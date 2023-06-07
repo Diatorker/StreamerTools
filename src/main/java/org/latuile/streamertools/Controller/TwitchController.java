@@ -81,20 +81,20 @@ public class TwitchController {
 
         switch (pos){
             case "top":
-                model.addAttribute("align", "start");
+                model.addAttribute("align", "flex-start");
                 model.addAttribute("justify", "center");
                 break;
             case "left":
                 model.addAttribute("align", "center");
-                model.addAttribute("justify", "start");
+                model.addAttribute("justify", "flex-start");
                 break;
             case "bottom":
-                model.addAttribute("align", "end");
+                model.addAttribute("align", "flex-end");
                 model.addAttribute("justify", "center");
                 break;
             case "right":
                 model.addAttribute("align", "center");
-                model.addAttribute("justify", "end");
+                model.addAttribute("justify", "flex-end");
                 break;
             case "center":
             default:
